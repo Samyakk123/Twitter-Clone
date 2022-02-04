@@ -11,7 +11,10 @@ from modules.functions import save_bg_picture, save_profile_picture, delete_old_
 import datetime
 
 
+import requests
+from requests.auth import HTTPBasicAuth
 
+from modules.HMA import HasherMatcherActionerAPI 
 
 
 
@@ -188,10 +191,21 @@ def dashboard():
         currentTime = str(x.strftime("%d")) +" "+ str(x.strftime("%B")) +"'"+ str(x.strftime("%y")) + " "+ str(x.strftime("%I")) +":"+ str(x.strftime("%M")) +" "+ str(x.strftime("%p"))
 
         if user_tweet.tweet_img.data:
+            
+            # url = 'https://0u65ayerv3.execute-api.us-east-1.amazonaws.com/api/submit/put-url/'
+            # myobj = {'authorization': }
+            HMA_instance = HasherMatcherActionerAPI('https://0u65ayerv3.execute-api.us-east-1.amazonaws.com/api/', '20e5d0a1-7e5c-4702-8354-ed007a391cbb')
+
+
+
             tweet_img = save_tweet_picture(user_tweet.tweet_img.data)
             post = Post(tweet=user_tweet.tweet.data, stamp=currentTime, author=current_user, post_img=tweet_img)
+            #user_tweet.tweet_img.data.stream._file
+            HMA_instance.submit_via_upload_put_url('heart', file=open("/mnt/c/Users/samya/downloads/Heart.png", 'rb'))
         else:
             post = Post(tweet=user_tweet.tweet.data, stamp=currentTime, author=current_user)
+
+    
 
         db.session.add(post)
         db.session.commit()

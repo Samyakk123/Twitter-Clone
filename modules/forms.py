@@ -5,6 +5,9 @@ from wtforms import StringField, SubmitField, PasswordField, BooleanField, TextA
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, Email, Length, ValidationError
 from modules.modals import User_mgmt
+import requests
+from requests.auth import HTTPBasicAuth
+
 
 class Signup(FlaskForm):
     username = StringField('Username',validators=[DataRequired(),Length(min=4)])
